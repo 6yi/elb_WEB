@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="asserts/css/signin.css" th:href="@{/layui/css/layui.css}" rel="stylesheet">
+    <script src="JQ/jquery-3.3.1.min.js" th:src="@{/layui/layui.js}"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="commons/bar::topbar"></div>
+
+</body>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>
+</html>

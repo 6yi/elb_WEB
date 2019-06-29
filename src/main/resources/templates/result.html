@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link  th:href="@{/layui/css/layui.css}" rel="stylesheet" media="all">
+    <script src="JQ/jquery-3.3.1.min.js" th:src="@{/layui/layui.js}"></script>
+    <script src="" th:src="@{/js/jquery.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        .text{
+            margin: 30px auto;
+            padding-top: 25px;
+            width: 500px;
+        }
+
+    </style>
+</head>
+<body>
+<div th:replace="commons/bar::topbar"></div>
+
+<div class="text" th:each="rs:${session.result}">
+    <p   style="font-size: 20px">  &nbsp;&nbsp;&nbsp;[[${rs}]]</p>
+</div>
+
+</body>
+</html>
