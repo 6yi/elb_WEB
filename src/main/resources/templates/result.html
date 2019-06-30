@@ -5,9 +5,11 @@
     <script src="JQ/jquery-3.3.1.min.js" th:src="@{/layui/layui.js}"></script>
     <script src="" th:src="@{/js/jquery.min.js}"></script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>Title</title>
     <style>
 
+        html{font-size:100%;}
         .text{
             margin: 30px auto;
             padding-top: 25px;
@@ -19,7 +21,7 @@
 <body>
 <div th:replace="commons/bar::topbar"></div>
 
-<div class="text" th:each="rs:${session.result}">
+<div class="text" th:each="rs:${session.result}">`
     <p   style="font-size: 20px">  &nbsp;&nbsp;&nbsp;[[${rs}]]</p>
 </div>
 
