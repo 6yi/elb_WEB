@@ -36,9 +36,9 @@ public class UserService {
         List<String> parms=new ArrayList<>();
 
         //默认使用我的ID和账号去查询水电
-        String passwordCont = "password=ddd286eb2672e5c8998ccbc1bfc21fa1";
+        String passwordCont;
         String SignCont = "sign=2";
-        String userNameCont = "account=13650010553";
+        String userNameCont;
 
         if(!username.startsWith("2")){
             SignCont="sign=3";
@@ -68,11 +68,11 @@ public class UserService {
             DataOutputStream out = new DataOutputStream(con
                     .getOutputStream());
 
-            if (!username.equals("default")) {
-                passwordCont = "password="+ MD5.getStringMD5String(MD5.getStringMD5String("jw134#%pqNLVfn"+password));
-                System.out.println("psw==="+passwordCont);
-                userNameCont="account="+username;
-            }
+
+            passwordCont = "password="+ MD5.getStringMD5String(MD5.getStringMD5String("jw134#%pqNLVfn"+password));
+            System.out.println("psw==="+passwordCont);
+            userNameCont="account="+username;
+
 
             out.writeBytes(passwordCont+"&"+SignCont+"&"+userNameCont);
             //流用完记得关
@@ -95,7 +95,7 @@ public class UserService {
                 result=matcher.group();
 
             }
-            System.out.println("result======="+result);
+
 
             if (!result.isEmpty()){
                 name=result.split(":")[1].replaceAll("\"","");
@@ -119,6 +119,7 @@ public class UserService {
         }
 
         return parms;
+
     }
 
 

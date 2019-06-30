@@ -35,6 +35,8 @@ public class workCon {
     @Autowired
     private UserService uservice;
 
+
+    //查询水电==========================================================================================================
     @GetMapping("/work/query")
     public void cx(@RequestParam("loudong")String loudong,@RequestParam("sushe")String sushe ,HttpServletRequest request,HttpServletResponse response) throws IOException {
         System.out.println("ajax有反应了！！"+loudong+"xx"+sushe);
@@ -49,6 +51,7 @@ public class workCon {
             tokne=list.get(0);
             userid=list.get(1);
         }
+
 
         String bulid=service.query(loudong,sushe,tokne,userid);
         request.getSession().setAttribute("msg",bulid);
