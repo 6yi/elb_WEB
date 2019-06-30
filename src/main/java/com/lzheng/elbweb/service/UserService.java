@@ -43,6 +43,28 @@ public class UserService {
         String userNameCont = "account=13650010553";
 
 
+
+        return parms;
+    }
+
+
+
+    public List<String> login(String password, String username){
+        List<String> parms=new ArrayList<>();
+
+        String val="";
+        String userid="";
+        String cookie="";
+        String name="";
+        String userNameCont = "";
+        String passwordCont = "";
+        String SignCont = "sign=2";
+        if(!username.startsWith("2")){
+            SignCont="sign=3";
+        }
+
+
+
         try {
             URL url=new URL("https://smart.ccdgut.edu.cn/app/user/login.do");
             HttpURLConnection con= (HttpURLConnection) url.openConnection();
@@ -91,8 +113,11 @@ public class UserService {
                 result=matcher.group();
             }
 
+            if (result!=null){
 
-            String name=result.split(":")[1].replaceAll("\"","");
+              name =result.split(":")[1].replaceAll("\"","");
+
+            }
 
 
             val = con.getHeaderField("Xps-Usertoken");

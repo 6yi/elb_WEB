@@ -44,8 +44,8 @@ public class UserCon {
                         request.getSession().setAttribute("userid",val.get(1));
                         request.getSession().setAttribute("cookie",val.get(2));
                         request.getSession().setAttribute("username",val.get(3));
-
                         return "index";
+
                 }else {
                         request.setAttribute("msg","账号或者密码错误");
                         //返回到登录界面
