@@ -95,10 +95,10 @@ public class UserCon {
 //        }
 
 
-        @GetMapping("/user/index")
+        @GetMapping("/user/about")
         public String about(HttpServletRequest request){
                 request.getSession().setAttribute("l","index");
-                return "index";
+                return "about";
         }
 
 }
