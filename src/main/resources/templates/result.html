@@ -7,13 +7,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>Title</title>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <style>
 
         html{font-size:100%;}
+        *{
+            margin:0;
+            padding:0;
+        }
         .text{
-            margin: 30px auto;
+            margin: 30px auto auto auto;
             padding-top: 25px;
-            width: 500px;
+            width: 100%;
+            display: none;
+        }
+        #bd{
+            margin: 50px auto auto auto;
+            width: 200px;
         }
 
     </style>
@@ -21,9 +32,41 @@
 <body>
 <div th:replace="commons/bar::topbar"></div>
 
-<div class="text" th:each="rs:${session.result}">`
-    <p   style="font-size: 20px">  &nbsp;&nbsp;&nbsp;[[${rs}]]</p>
+<div class="text" >
+        <div id="bd">[[${session.hl}]]</div>
+
+
+    <table class="layui-table" id="bd"th:each="rs:${session.result}" >
+        <colgroup>
+            <col width="200px">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>[[${rs[0]}]]</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr>
+            <td>[[${rs[1]}]]</td>
+        </tr>
+        <tr>
+            <td>[[${rs[2]}]]</td>
+        </tr>
+        <tr>
+            <td>[[${rs[3]}]]</td>
+        </tr>
+        </tbody>
+
+    </table>
 </div>
 
+
+
 </body>
+<script>
+    $(document).ready(function(){
+
+        $(".text").fadeIn(400);
+    })
+</script>
 </html>

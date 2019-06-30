@@ -67,9 +67,23 @@ public class workCon {
     public String queryResult(HttpServletRequest request,HttpServletResponse response){
        String result[]= service.queryResult((String) request.getSession().getAttribute("token"),
                 (String) request.getSession().getAttribute("userid"));
+       String results[][]=new String[result.length-1][4];
+       for (int i=1;i<result.length;i++){
+            int z=1;
+           for(String strs:result[i].split(",")){
+                   results[i-1][z]=strs;
+                   z++;
+            }
 
-       result[0]="亲爱的"+request.getSession().getAttribute("username")+"以下是你本学期的成绩噢！";
-       request.getSession().setAttribute("result",result);
+            String obj[]=results[i-1][1].split(":");
+            results[i-1][0]=obj[0];
+            results[i-1][1]=obj[1];
+       }
+
+//       result[0]="亲爱的"+request.getSession().getAttribute("username")+"以下是你本学期的成绩噢！";
+
+       request.getSession().setAttribute("result",results);
+       request.getSession().setAttribute("hl","亲爱的"+request.getSession().getAttribute("username")+"以下是你本学期的成绩噢！");
        return "result";
 
     }
