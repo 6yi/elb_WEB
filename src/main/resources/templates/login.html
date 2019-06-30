@@ -16,7 +16,7 @@
 
 	<body class="text-center">
 		<form class="form-signin" action="dashboard.html" th:action="@{/user/login}" method="post">
-			<img class="mb-4" th:src="@{/img/login.png}" src="asserts/img/bootstrap-solid.svg" alt="" width="150" height="140">
+			<img class="mb-4" th:src="@{/img/title.png}" src="../img/tigle.png" alt="" width="120" height="120">
 			<h1 class="h3 mb-3 font-weight-normal" th:text="#{login.tip}">Please sign in</h1>
 			<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"/>
 			<label class="sr-only" th:text="#{login.username}">Username</label>

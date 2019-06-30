@@ -1,6 +1,6 @@
 package com.lzheng.elbweb.entities;
 
-import lombok.Data;
+
 
 /**
  * @ClassName Msg

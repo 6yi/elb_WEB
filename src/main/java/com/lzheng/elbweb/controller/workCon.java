@@ -84,6 +84,7 @@ public class workCon {
 
        request.getSession().setAttribute("result",results);
        request.getSession().setAttribute("hl","亲爱的"+request.getSession().getAttribute("username")+"以下是你本学期的成绩噢！");
+       request.getSession().setAttribute("l","jw");
        return "result";
 
     }

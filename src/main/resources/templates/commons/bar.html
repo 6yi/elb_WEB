@@ -14,7 +14,7 @@
     <ul class="layui-nav" lay-filter="">
         <li th:class="${session.l == 'query'?'layui-nav-item layui-this':'layui-nav-item'}" class="layui-nav-item layui-this"><a href="" th:href="@{/user/query}">查询水电</a></li>
 <!--        <li th:class="${session.l == 'recharge'?'layui-nav-item layui-this':'layui-nav-item'}" class="layui-nav-item"><a href="" th:href="@{/user/recharge}">充值水电</a></li>-->
-        <li class="layui-nav-item">
+        <li th:class="${session.l == 'jw'?'layui-nav-item layui-this':'layui-nav-item'}" class="layui-nav-item">
             <a href="javascript:;">教务</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a href="" th:href="@{/work/queryResult}">查询成绩</a></dd>
