@@ -95,5 +95,10 @@ public class UserCon {
 //        }
 
 
+        @GetMapping("/user/index")
+        public String about(HttpServletRequest request){
+                request.getSession().setAttribute("l","index");
+                return "index";
+        }
 
 }
