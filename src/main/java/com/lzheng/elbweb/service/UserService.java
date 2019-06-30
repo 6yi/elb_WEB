@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
 public class UserService {
     private static Pattern pattern = Pattern.compile("\"xm\":.{4,5}");
 
+    //这个query是 queryToken 的意思，，，当初写的时候没注意。。命名不规范，找BUG两行泪
+
     public List<String> query(String password, String username){
         String val="";
         String userid="";
@@ -36,40 +38,18 @@ public class UserService {
         //默认使用我的ID和账号去查询水电
         String passwordCont = "password=ddd286eb2672e5c8998ccbc1bfc21fa1";
         String SignCont = "sign=2";
-        if(!username.startsWith("2")){
-            SignCont="sign=3";
-        }
-
         String userNameCont = "account=13650010553";
 
-
-
-        return parms;
-    }
-
-
-
-    public List<String> login(String password, String username){
-        List<String> parms=new ArrayList<>();
-
-        String val="";
-        String userid="";
-        String cookie="";
-        String name="";
-        String userNameCont = "";
-        String passwordCont = "";
-        String SignCont = "sign=2";
         if(!username.startsWith("2")){
             SignCont="sign=3";
         }
-
-
 
         try {
             URL url=new URL("https://smart.ccdgut.edu.cn/app/user/login.do");
             HttpURLConnection con= (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setUseCaches(true);
+
             //伪造请求头redirect
             con.setRequestProperty("User-Agent", "MI 6/1.8(Android;8.0.0;1080x1790;s;46000;wifi)");
             con.setRequestProperty("DevicesId", "MI 6/866654034887460");
@@ -87,6 +67,7 @@ public class UserService {
             con.connect();
             DataOutputStream out = new DataOutputStream(con
                     .getOutputStream());
+
             if (!username.equals("default")) {
                 passwordCont = "password="+ MD5.getStringMD5String(MD5.getStringMD5String("jw134#%pqNLVfn"+password));
                 System.out.println("psw==="+passwordCont);
@@ -101,6 +82,7 @@ public class UserService {
             Set<String> keys = headers.keySet();
             BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
+            String name="";
             String line;
             line = reader.readLine();
 
@@ -111,12 +93,12 @@ public class UserService {
             while(matcher.find()){
                 //获取字符串
                 result=matcher.group();
+
             }
+            System.out.println("result======="+result);
 
-            if (result!=null){
-
-              name =result.split(":")[1].replaceAll("\"","");
-
+            if (!result.isEmpty()){
+                name=result.split(":")[1].replaceAll("\"","");
             }
 
 
@@ -131,10 +113,14 @@ public class UserService {
 
             reader.close();
             con.disconnect();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return parms;
     }
+
+
 
 }

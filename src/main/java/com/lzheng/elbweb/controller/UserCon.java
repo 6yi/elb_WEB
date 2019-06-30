@@ -26,12 +26,18 @@ import java.util.Set;
 public class UserCon {
         @Autowired
         private UserService service;
+
+  //=========================================================================================================================
+
         @PostMapping("/user/login")
         public String login(@RequestParam("username")String username,
                             @RequestParam("password")String password,String urlName, HttpServletRequest request){
 
+
                 //先去获取token和userID，这步应该交给Service层来做才对，考完试再改吧！
                 List<String> val=service.query(password,username);
+
+
                 //判断是否登录成功
                 if (val.get(1)!=null){
                         //登录成功则拼凑成完整的链接
@@ -44,6 +50,7 @@ public class UserCon {
                         request.getSession().setAttribute("userid",val.get(1));
                         request.getSession().setAttribute("cookie",val.get(2));
                         request.getSession().setAttribute("username",val.get(3));
+
                         return "index";
 
                 }else {
@@ -54,11 +61,15 @@ public class UserCon {
 
         }
 
+        //=========================================================================================================================
+
         @GetMapping("/user/login")
         public String login(){
               return "login";
 
         }
+
+        //=========================================================================================================================
 
         @GetMapping("/user/query")
         public String cx( HttpServletRequest request){
@@ -66,11 +77,15 @@ public class UserCon {
                 return "query";
         }
 
+        //=========================================================================================================================
+
         @GetMapping("/user/recharge")
         public String cz( HttpServletRequest request){
                 request.getSession().setAttribute("l","recharge");
                 return "recharge";
         }
+
+        //=========================================================================================================================
 
 //        @RequestMapping("cz")
 //        public String cz(){
