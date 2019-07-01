@@ -50,7 +50,6 @@ public class UserCon {
                         request.getSession().setAttribute("userid",val.get(1));
                         request.getSession().setAttribute("cookie",val.get(2));
                         request.getSession().setAttribute("username",val.get(3));
-
                         return "index";
 
                 }else {

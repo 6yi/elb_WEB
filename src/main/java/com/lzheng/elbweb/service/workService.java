@@ -107,7 +107,6 @@ public class workService {
             con.connect();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
             String line;
             StringBuilder builder=new StringBuilder();
             while ((line = reader.readLine()) != null) {

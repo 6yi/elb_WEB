@@ -23,7 +23,7 @@ public class loginIn implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //每一个项目对于登陆的实现逻辑都有所区别，我这里使用最简单的Session提取User来验证登陆。
+
         HttpSession session = request.getSession();
         //这里的User是登陆时放入session的
         String token = (String)session.getAttribute("token");
@@ -33,8 +33,8 @@ public class loginIn implements HandlerInterceptor {
             //当然你可以利用response给用户返回一些提示信息，告诉他没登陆
             request.setAttribute("msg","您还未登录");
             request.getRequestDispatcher("/user/login").forward(request,response);
-
             return false;
+
         }else {
             return true;
             //如果session里有user，表示该用户已经登陆，放行，用户即可继续调用自己需要的接口

@@ -37,8 +37,10 @@ public class workCon {
 
 
     //查询水电==========================================================================================================
+
     @GetMapping("/work/query")
     public void cx(@RequestParam("loudong")String loudong,@RequestParam("sushe")String sushe ,HttpServletRequest request,HttpServletResponse response) throws IOException {
+
         System.out.println("ajax有反应了！！"+loudong+"xx"+sushe);
 
         String tokne=(String)request.getSession().getAttribute("token");
@@ -68,6 +70,8 @@ public class workCon {
        String result[]= service.queryResult((String) request.getSession().getAttribute("token"),
                 (String) request.getSession().getAttribute("userid"));
        String results[][]=new String[result.length-1][4];
+
+       //这里是切割获取的字符串
        for (int i=1;i<result.length;i++){
             int z=1;
            for(String strs:result[i].split(",")){
