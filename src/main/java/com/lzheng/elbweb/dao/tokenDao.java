@@ -44,16 +44,19 @@ public class tokenDao {
         return jedis.get("cookie");
     }
 
-    public String setToken(String token){
-        return jedis.set("token",token);
+    public void setToken(String token){
+        jedis.set("token",token);
+        jedis.expire("token",600);
     }
 
-    public String setUserId(String userid){
-        return jedis.set("userid",userid);
+    public void setUserId(String userid){
+        jedis.set("userid",userid);
+        jedis.expire("userid",600);
     }
 
-    public String setCookie(String cookie){
-        return jedis.set("cookie",cookie);
+    public void setCookie(String cookie){
+        jedis.set("cookie",cookie);
+        jedis.expire("cookie",600);
     }
 
 
