@@ -37,11 +37,14 @@ public class UserService {
         List<String> parms=new ArrayList<>();
         String jedistoken;
 
-        if ((jedistoken=dao.queryToken())!=null){
-            parms.add(jedistoken);
-            parms.add(dao.queryUserId());
-            parms.add(dao.queryCookie());
-            return parms;
+        if (username.equals("13650010553")){
+            if ((jedistoken=dao.queryToken())!=null) {
+                parms.add(jedistoken);
+                parms.add(dao.queryUserId());
+                parms.add(dao.queryCookie());
+                parms.add(dao.queryName());
+                return parms;
+            }
         }
 
         String val="";
@@ -124,7 +127,7 @@ public class UserService {
             dao.setToken(val);
             dao.setUserId(userid);
             dao.setCookie(cookie);
-
+            dao.setName(name);
 
             parms.add(val);
             parms.add(userid);

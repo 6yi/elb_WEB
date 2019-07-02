@@ -50,7 +50,6 @@ public class workCon {
 
         List<String> list=new ArrayList<>();
 
-
         if (tokne==null){
              list=uservice.query("lzheng","13650010553");
             tokne=list.get(0);

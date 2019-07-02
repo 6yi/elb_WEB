@@ -21,7 +21,7 @@ public class tokenDao {
 
     static {
             jedis=new Jedis("59.110.173.180",6378);
-            jedis.auth("lzheng");
+            jedis.auth("xxx");
     }
 
     public static Jedis getJedis() {
@@ -44,19 +44,26 @@ public class tokenDao {
         return jedis.get("cookie");
     }
 
+    public String queryName(){
+        return jedis.get("name");
+    }
     public void setToken(String token){
         jedis.set("token",token);
-        jedis.expire("token",600);
+        jedis.expire("token",180);
     }
 
     public void setUserId(String userid){
         jedis.set("userid",userid);
-        jedis.expire("userid",600);
+        jedis.expire("userid",180);
     }
 
     public void setCookie(String cookie){
         jedis.set("cookie",cookie);
-        jedis.expire("cookie",600);
+        jedis.expire("cookie",180);
+    }
+    public void setName(String name){
+        jedis.set("name",name);
+        jedis.expire("name",180);
     }
 
 
