@@ -26,6 +26,7 @@ public class tokenDao {
         return jedis;
     }
 
+
     public static void setJedis(Jedis jedis) {
         tokenDao.jedis = jedis;
     }
