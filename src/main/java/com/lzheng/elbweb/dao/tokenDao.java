@@ -16,7 +16,9 @@ import redis.clients.jedis.Jedis;
 
 @Component
 public class tokenDao {
+
     private static Jedis jedis;
+
     static {
             jedis=new Jedis("59.110.173.180",6378);
             jedis.auth("lzheng");
@@ -34,6 +36,28 @@ public class tokenDao {
     public String queryToken(){
         return jedis.get("token");
     }
+    public String queryUserId(){
+        return jedis.get("userid");
+    }
+
+    public String queryCookie(){
+        return jedis.get("cookie");
+    }
+
+    public String setToken(String token){
+        return jedis.set("token",token);
+    }
+
+    public String setUserId(String userid){
+        return jedis.set("userid",userid);
+    }
+
+    public String setCookie(String cookie){
+        return jedis.set("cookie",cookie);
+    }
+
+
+
     //    public static void main(String[] args) {
 //        String host="59.110.173.180";
 //        Jedis jedis=new Jedis(host,6378);

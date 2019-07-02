@@ -1,6 +1,8 @@
 package com.lzheng.elbweb.service;
 
+import com.lzheng.elbweb.dao.tokenDao;
 import com.lzheng.elbweb.entities.MD5;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -26,15 +28,26 @@ import java.util.regex.Pattern;
 @Service
 public class UserService {
     private static Pattern pattern = Pattern.compile("\"xm\":.{4,5}");
-
+    @Autowired
+    private tokenDao dao;
 
     //这个query是 queryToken 的意思，，，当初写的时候没注意。。命名不规范，找BUG两行泪
 
     public List<String> query(String password, String username){
+        List<String> parms=new ArrayList<>();
+        String jedistoken;
+
+        if ((jedistoken=dao.queryToken())!=null){
+            parms.add(jedistoken);
+            parms.add(dao.queryUserId());
+            parms.add(dao.queryCookie());
+            return parms;
+        }
+
         String val="";
         String userid="";
         String cookie="";
-        List<String> parms=new ArrayList<>();
+
 
         //默认使用我的ID和账号去查询水电
         String passwordCont;
@@ -107,6 +120,11 @@ public class UserService {
             val = con.getHeaderField("Xps-Usertoken");
             userid=con.getHeaderField("Xps-UserId");
             cookie=con.getHeaderField("Set-Cookie");
+
+            dao.setToken(val);
+            dao.setUserId(userid);
+            dao.setCookie(cookie);
+
 
             parms.add(val);
             parms.add(userid);

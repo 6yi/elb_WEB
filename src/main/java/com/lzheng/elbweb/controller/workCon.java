@@ -2,6 +2,7 @@ package com.lzheng.elbweb.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.lzheng.elbweb.dao.tokenDao;
 import com.lzheng.elbweb.entities.Msg;
 import com.lzheng.elbweb.service.UserService;
 import com.lzheng.elbweb.service.workService;
@@ -36,6 +37,7 @@ public class workCon {
     private UserService uservice;
 
 
+
     //查询水电==========================================================================================================
 
     @GetMapping("/work/query")
@@ -47,6 +49,7 @@ public class workCon {
         String userid=(String)request.getSession().getAttribute("userid");
 
         List<String> list=new ArrayList<>();
+
 
         if (tokne==null){
              list=uservice.query("lzheng","13650010553");
