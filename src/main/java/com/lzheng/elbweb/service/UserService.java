@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 public class UserService {
     private static Pattern pattern = Pattern.compile("\"xm\":.{4,5}");
 
+
     //这个query是 queryToken 的意思，，，当初写的时候没注意。。命名不规范，找BUG两行泪
 
     public List<String> query(String password, String username){
