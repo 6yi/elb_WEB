@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="asserts/css/signin.css" th:href="@{/layui/css/layui.css}" rel="stylesheet">
+    <script src="JQ/jquery-3.3.1.min.js" th:src="@{/layui/layui.js}"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta charset="UTF-8">
+    <title>关于</title>
+    <style>
+        html{font-size:100%;}
+        #bd{
+            margin: 50px auto auto auto;
+            width: 380px;
+        }
+        #foot{
+            position:fixed; bottom:0;
+            align-content: center;
+            padding-left: 40%;
+        }
+        i{
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="commons/bar::topbar"></div>
+
+<div class="layui-row" id="bd">
+
+    <p style="font-size: 30px">关于</p>
+    <br/>
+    <br/>
+    <p style="font-size: 15px">此站服务全部来源于学校的接口，目前支持查询电力和成绩</p>
+    <br/>
+    <p style="font-size: 15px">充值电费的功能因为涉及到某些敏感原因，就撤销了.</p>
+    <p style="font-size: 15px">查课表抽空补上。</p>
+    <br/>
+    <p style="font-size: 15px">源码仓库链接在下面，如果对你有用，可以给我点个stars噢~~</p>
+    <br/>
+    <p style="font-size: 20px">若有任何侵权行为，请联系我，让我提前跑路</p>
+    <br/>
+    <p style="font-size: 10px">PS：欢迎加入科协网络部</p>
+
+</div>
+
+<div class="layui-row" id="foot">
+    <i class="layui-icon layui-icon-link"><a  href="https://github.com/6yi/elb_WEB" style="font-size: 20px">源码地址</a></i>
+    <i class="layui-icon layui-icon-login-wechat"><a  href="../img/wechat.png" style="font-size: 20px">Wechat</a></i>
+</div>
+</body>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>
+</html>

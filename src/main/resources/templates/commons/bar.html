@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="asserts/css/signin.css" th:href="@{/layui/css/layui.css}" rel="stylesheet">
+    <script src="JQ/jquery-3.3.1.min.js" th:src="@{/layui/layui.js}"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" th:fragment="topbar" >
+
+    <ul class="layui-nav" lay-filter="">
+        <li th:class="${session.l == 'query'?'layui-nav-item layui-this':'layui-nav-item'}" class="layui-nav-item layui-this"><a href="" th:href="@{/user/query}">查询水电</a></li>
+<!--        <li th:class="${session.l == 'recharge'?'layui-nav-item layui-this':'layui-nav-item'}" class="layui-nav-item"><a href="" th:href="@{/user/recharge}">充值水电</a></li>-->
+        <li th:class="${session.l == 'jw'?'layui-nav-item layui-this':'layui-nav-item'}" class="layui-nav-item">
+            <a href="javascript:;">教务</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a href="" th:href="@{/work/queryResult}">查询成绩</a></dd>
+                <dd><a href="" >查询课表</a></dd>
+            </dl>
+        </li>
+        <ul class="layui-nav layui-layout-right">
+            <i class="layui-icon layui-icon-username"></i>
+            <li class="layui-nav-item"><a href="" th:href="@{/user/login}" th:text="${session.username!=null}?${session.username}:${'登录'}" >登录</a></li>
+            <li class="layui-nav-item"><a href="" th:href="@{/user/about}">关于</a></li>
+        </ul>
+    </ul>
+
+</nav>
+<!--sidebar-->
+</body>
+</html>
