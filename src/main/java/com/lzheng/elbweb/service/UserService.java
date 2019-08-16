@@ -71,7 +71,7 @@ public class UserService {
 
 
             passwordCont = "password="+ MD5.getStringMD5String(MD5.getStringMD5String("jw134#%pqNLVfn"+password));
-            System.out.println("psw==="+passwordCont);
+
             userNameCont="account="+username;
 
 
