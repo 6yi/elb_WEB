@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
         //妈的，我使用拦截全部，然后排除部分的时候有问题！！！只能曲线救国了
 
 
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/recharge","/work/queryResult");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/recharge","/work/queryResult","/work/queryClass");
 
 
 

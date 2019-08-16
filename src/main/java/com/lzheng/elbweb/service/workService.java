@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +32,7 @@ public class workService {
 
     //正则
     private static Pattern pattern = Pattern.compile("<pre.+>[\\w\\W]*<.+pre>");
+    private static Pattern pattern2 = Pattern.compile("<span class=\"fl\".+>[\\w\\W]*<.+span>");
 
     //查水电
     public String query(String loudong,String sushe,String token,String  userid){
@@ -77,7 +79,71 @@ public class workService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return builder.toString();
+            return builder.toString();
+    }
+
+    //查课表
+    public List<String[]> queryClass(String token,String userid) {
+        try {
+            String cokie=querCookie(userid,token);
+            URL url = new URL("http://wx.ccdgut.edu.cn/ccdgutwx//zhwebapp/gong/chakebiao.jsp");
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setUseCaches(true);
+            con.setRequestProperty("Referer", "http://wx.ccdgut.edu.cn/ccdgutwx/zhwebapp/index.jsp?type=1&needLogin=1&XPS-UserId="+userid+"&token="+token+"&");
+            con.setRequestProperty("Host", "wx.ccdgut.edu.cn");
+            con.setRequestProperty("Connection", "Keep-Alive");
+            con.setRequestProperty("Upgrade-Insecure-Requests", "1");
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
+            con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
+            con.setRequestProperty("Accept-Encoding", "gzip, deflate");
+            con.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9");
+            con.setRequestProperty("Cookie", cokie+"; UM_distinctid=1691e9022e195c-04ddb1b4f29ea4-57b153d-100200-1691e9022e2976; pgv_pvi=489231360; JSESSIONID=D1DCBD8014E5B0F81C58B09B2D6C0F11");
+            con.setDoOutput(true);
+            con.setDoInput(true);
+//            con.connect();
+
+            con.connect();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String line;
+            StringBuilder builder=new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+//                System.out.println(line);
+                builder.append(line);
+            }
+
+            Matcher matcher = pattern2.matcher(builder.toString());
+            String result="";
+            //查找符合规则的子串
+            while(matcher.find()){
+                //获取字符串
+                result=matcher.group();
+            }
+            String results=result.replaceAll("<span class=\"fl\">","").replaceAll("</span>","");
+            String[] sts=results.split("<br/><br/><br/>");
+            List<String[]> list=new ArrayList<>();
+            int i=0;
+            for (String str:sts){
+//                System.out.println(str);
+                String[] days=str.replaceAll("<br/><br/>","").split("((-------------------)|(<br/>))");
+                list.add(days);
+            }
+            ArrayList<String[]> list2=new ArrayList<>();
+//            for (String[] str:list){
+//                for (String strs:str){
+//                    if (strs.equals("\n")){
+//
+//                    }
+//                }
+//            }
+            con.disconnect();
+            return list;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
     }
 
 

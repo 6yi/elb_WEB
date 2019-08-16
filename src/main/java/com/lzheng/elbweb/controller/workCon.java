@@ -7,10 +7,7 @@ import com.lzheng.elbweb.service.UserService;
 import com.lzheng.elbweb.service.workService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,6 +90,16 @@ public class workCon {
 
     }
 
+
+
+    @GetMapping("/work/queryClass")
+    public String queryClass(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        List<String[]> list=service.queryClass((String) request.getSession().getAttribute("token"),
+                (String) request.getSession().getAttribute("userid"));
+
+        request.getSession().setAttribute("class",list);
+        return "class";
+    }
 
 
 }

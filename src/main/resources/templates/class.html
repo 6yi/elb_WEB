@@ -6,62 +6,57 @@
     <script src="" th:src="@{/js/jquery.min.js}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <title>查询成绩</title>
+    <title>查询课表</title>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <style>
-
         html{font-size:100%;}
         *{
             margin:0;
             padding:0;
         }
         .text{
-            margin: 30px auto auto auto;
+            /*margin: 30px auto auto auto;*/
+            float: left;
             padding-top: 25px;
-            width: 100%;
+            width: 20%;
             display: none;
         }
-        #bd{
-            margin: 50px auto auto auto;
-            width: 200px;
+        .foo{
+            width: 100%;
+            height: 100%;
         }
-
+        /*#bd{*/
+        /*    margin: 50px auto auto auto;*/
+        /*    width: 200px;*/
+        /*}*/
     </style>
 </head>
 <body>
 <div th:replace="commons/bar::topbar"></div>
+<div class="foo">
+<div class="text" th:each="rs:${session.class}">
+<table class="layui-table" >
+    <colgroup>
+        <col width="150">
+        <col width="150">
+        <col>
+    </colgroup>
 
-<div class="text" >
-        <div id="bd">[[${session.hl}]]</div>
+    <thead>
+<!--    <tr>-->
+<!--        <th th:each="rs:${session.class}">[[${rs[0]}]]</th>-->
+<!--    </tr>-->
+    </thead>
+    <tbody>
+        <tr th:each="re:${rs}">
+            <td th:text="${re}"></td>
+        </tr>
+    </tbody>
 
-
-    <table class="layui-table" id="bd" th:each="rs:${session.result}" >
-        <colgroup>
-            <col width="200px">
-        </colgroup>
-        <thead>
-        <tr>
-            <th>[[${rs[0]}]]</th>
-        </tr>
-        </thead>
-        <tbody >
-        <tr>
-            <td>[[${rs[1]}]]</td>
-        </tr>
-        <tr>
-            <td>[[${rs[2]}]]</td>
-        </tr>
-        <tr>
-            <td>[[${rs[3]}]]</td>
-        </tr>
-        </tbody>
-
-    </table>
+</table>
 </div>
-
-
-
+</div>
 </body>
 <script>
     $(document).ready(function(){
