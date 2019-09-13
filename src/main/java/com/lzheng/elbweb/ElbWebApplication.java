@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ElbWebApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(ElbWebApplication.class, args);
     }
 

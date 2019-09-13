@@ -4,13 +4,13 @@ import com.lzheng.elbweb.entities.MD5;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,15 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName workService
@@ -34,16 +43,47 @@ public class workService {
     private static Pattern pattern = Pattern.compile("<pre.+>[\\w\\W]*<.+pre>");
     private static Pattern pattern2 = Pattern.compile("<span class=\"fl\".+>[\\w\\W]*<.+span>");
 
+    public List<String> get_ip() throws IOException, JSONException {
+        URL url1=new URL("http://121.199.42.16/VAD/GetIp.aspx?act=get&num=1&time=60&plat=0&re=0&type=0&ow=1");
+        StringBuilder json = new StringBuilder();
+        URLConnection yc = url1.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                yc.getInputStream(),"utf-8"));//防止乱码
+        String inputLine = null;
+        while ((inputLine = in.readLine()) != null) {
+            json.append(inputLine);
+        }
+        in.close();
+        JSONObject jsonObj = new JSONObject(json.toString());
+        //int ip=jsonObj.getInt("IP");
+        String json2=jsonObj.getString("data");
+        JSONObject jsonObj2 = new JSONObject(json2.replaceAll("\\[","").replaceAll("]",""));
+        String ip=jsonObj2.getString("IP");
+        String port=jsonObj2.getString("Port");
+        List<String> list=new ArrayList<>();
+        list.add(ip);
+        list.add(port);
+        System.out.println("获取代理ip成功："+ip);
+        return list;
+    }
+
     //查水电
     public String query(String loudong,String sushe,String token,String  userid){
         StringBuilder builder=new StringBuilder();
         String tokenname = "token="+token;
         String sushename="sushe="+sushe;
         String loudongname="loudong="+loudong;
-
         try {
+            URL url1=new URL("http://121.199.42.16/VAD/GetIp.aspx?act=get&num=1&time=60&plat=0&re=0&type=0&ow=1");
+            List<String> list=get_ip();
+//            System.getProperties().setProperty("proxySet", "true");
+//            System.setProperty("http.proxyHost", list.get(0));
+//            System.setProperty("http.proxyPort", list.get(1));
+            SocketAddress addr = new InetSocketAddress(list.get(0), Integer.parseInt(list.get(1)));
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
             URL url=new URL("https://smart-ccdgut.com/elecharge/data.php");
-            HttpURLConnection con= (HttpURLConnection) url.openConnection();
+            HttpURLConnection con= (HttpURLConnection) url.openConnection(proxy);
+            //System.out.println(getHtml("http://www.ip138.com/ip2city.asp"));
             con.setRequestMethod("POST");
             con.setUseCaches(true);
             //伪造请求头redirect
@@ -58,7 +98,7 @@ public class workService {
             con.setRequestProperty("Accept-Encoding","gzip, deflate, br");
             con.setRequestProperty("Accept-Language","zh-CN,zh;q=0.9");
             //请求参数
-
+            System.out.println("准备尝试！");
             con.setDoOutput(true);
             con.setDoInput(true);
             con.connect();
@@ -69,8 +109,10 @@ public class workService {
             out.flush();
             out.close();
             //获取响应
+
             InputStream stream = new GZIPInputStream(con.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"utf-8"));
+            System.out.println("获取到了！");
             String line;
             while ((line = reader.readLine()) != null){
                 builder.append(line);
@@ -91,6 +133,11 @@ public class workService {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setUseCaches(true);
+            String ip = "58.110.173.180";
+            con.setRequestProperty("X-Forwarded-For",ip);
+            con.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
+            con.setRequestProperty("HTTP_CLIENT_IP",ip);
+            con.setRequestProperty("REMOTE_ADDR",ip);
             con.setRequestProperty("Referer", "http://wx.ccdgut.edu.cn/ccdgutwx/zhwebapp/index.jsp?type=1&needLogin=1&XPS-UserId="+userid+"&token="+token+"&");
             con.setRequestProperty("Host", "wx.ccdgut.edu.cn");
             con.setRequestProperty("Connection", "Keep-Alive");
@@ -157,6 +204,11 @@ public class workService {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setUseCaches(true);
+            String ip = "58.110.173.180";
+            con.setRequestProperty("X-Forwarded-For",ip);
+            con.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
+            con.setRequestProperty("HTTP_CLIENT_IP",ip);
+            con.setRequestProperty("REMOTE_ADDR",ip);
             con.setRequestProperty("Referer", "http://wx.ccdgut.edu.cn/ccdgutwx/zhwebapp/index.jsp?type=1&needLogin=1&XPS-UserId="+userid+"&token="+token+"&");
             con.setRequestProperty("Host", "wx.ccdgut.edu.cn");
             con.setRequestProperty("Connection", "Keep-Alive");
@@ -206,6 +258,12 @@ public class workService {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setUseCaches(true);
+            String ip = "58.110.173.180";
+            con.setRequestProperty("X-Forwarded-For",ip);
+            con.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
+            con.setRequestProperty("HTTP_CLIENT_IP",ip);
+            con.setRequestProperty("REMOTE_ADDR",ip);
+
             con.setRequestProperty("Host", "wx.ccdgut.edu.cn");
             con.setRequestProperty("Connection", "Keep-Alive");
             con.setRequestProperty("Upgrade-Insecure-Requests", "1");

@@ -1,6 +1,7 @@
 package com.lzheng.elbweb.service;
 
 import com.lzheng.elbweb.entities.MD5;
+import org.mockito.internal.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -51,6 +52,11 @@ public class UserService {
             con.setUseCaches(true);
 
             //伪造请求头redirect
+            String ip = "58.110.173.180";
+            con.setRequestProperty("X-Forwarded-For",ip);
+            con.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
+            con.setRequestProperty("HTTP_CLIENT_IP",ip);
+            con.setRequestProperty("REMOTE_ADDR",ip);
             con.setRequestProperty("User-Agent", "MI 6/1.8(Android;8.0.0;1080x1790;s;46000;wifi)");
             con.setRequestProperty("DevicesId", "MI 6/866654034887460");
             con.setRequestProperty("XPS-PUSHID", "AtDGuURXRLxp4Lo7cwFwbOfS___dBGmcoQG0oaiWPFK3");
