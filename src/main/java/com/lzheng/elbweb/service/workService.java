@@ -109,7 +109,6 @@ public class workService {
             out.flush();
             out.close();
             //获取响应
-
             InputStream stream = new GZIPInputStream(con.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"utf-8"));
             System.out.println("获取到了！");
@@ -138,6 +137,7 @@ public class workService {
             con.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
             con.setRequestProperty("HTTP_CLIENT_IP",ip);
             con.setRequestProperty("REMOTE_ADDR",ip);
+
             con.setRequestProperty("Referer", "http://wx.ccdgut.edu.cn/ccdgutwx/zhwebapp/index.jsp?type=1&needLogin=1&XPS-UserId="+userid+"&token="+token+"&");
             con.setRequestProperty("Host", "wx.ccdgut.edu.cn");
             con.setRequestProperty("Connection", "Keep-Alive");
@@ -178,13 +178,7 @@ public class workService {
                 list.add(days);
             }
             ArrayList<String[]> list2=new ArrayList<>();
-//            for (String[] str:list){
-//                for (String strs:str){
-//                    if (strs.equals("\n")){
-//
-//                    }
-//                }
-//            }
+
             con.disconnect();
             return list;
         }catch (Exception e){
@@ -263,7 +257,6 @@ public class workService {
             con.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
             con.setRequestProperty("HTTP_CLIENT_IP",ip);
             con.setRequestProperty("REMOTE_ADDR",ip);
-
             con.setRequestProperty("Host", "wx.ccdgut.edu.cn");
             con.setRequestProperty("Connection", "Keep-Alive");
             con.setRequestProperty("Upgrade-Insecure-Requests", "1");
@@ -275,11 +268,9 @@ public class workService {
             con.setRequestProperty("X-Requested-With", "com.zc.dgcsxy");
             con.connect();
             BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String line;
 //            while ((line = reader.readLine()) != null){
 //                System.out.println(line);
 //            }
-
             cokies=con.getHeaderField("Set-Cookie").split(";");
             return cokies[0];
         }catch (Exception e){

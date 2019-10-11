@@ -28,7 +28,6 @@ public class UserCon {
         private UserService service;
 
   //=========================================================================================================================
-
         @PostMapping("/user/login")
         public String login(@RequestParam("username")String username,
                             @RequestParam("password")String password,String urlName, HttpServletRequest request){

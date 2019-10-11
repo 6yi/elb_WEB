@@ -1,7 +1,7 @@
 package com.lzheng.elbweb.service;
 
 import com.lzheng.elbweb.entities.MD5;
-import org.mockito.internal.util.StringUtil;
+
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -35,16 +35,13 @@ public class UserService {
         String userid="";
         String cookie="";
         List<String> parms=new ArrayList<>();
-
         //默认使用我的ID和账号去查询水电
         String passwordCont;
         String SignCont = "sign=2";
         String userNameCont;
-
         if(!username.startsWith("2")){
             SignCont="sign=3";
         }
-
         try {
             URL url=new URL("https://smart.ccdgut.edu.cn/app/user/login.do");
             HttpURLConnection con= (HttpURLConnection) url.openConnection();
@@ -73,9 +70,6 @@ public class UserService {
             con.connect();
             DataOutputStream out = new DataOutputStream(con
                     .getOutputStream());
-
-
-
             passwordCont = "password="+ MD5.getStringMD5String(MD5.getStringMD5String("jw134#%pqNLVfn"+password));
 
             userNameCont="account="+username;
