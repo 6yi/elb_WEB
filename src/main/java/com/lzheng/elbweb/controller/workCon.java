@@ -44,7 +44,7 @@ public class workCon {
             tokne=list.get(0);
             userid=list.get(1);
         }
-        String bulid=service.query(loudong,sushe,tokne,userid);
+        String bulid=service.query(loudong,sushe);
         request.getSession().setAttribute("msg",bulid);
         PrintWriter out = response.getWriter();
         out.print(bulid);

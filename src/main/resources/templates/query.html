@@ -125,15 +125,13 @@
                     var i = 0;
                     var txt2="";
                     $("#tbody").empty();
-                    $("#now").html("剩余电力："+data.remainelectric+"千瓦·时");
-                    $.each(data.table,function(index,value) {
-                        txt2 += "<tr><td>"+data.table[index]+"</td><td>"+data.table[index+1]+" 千瓦·时</td><tr/>";
-                        data.table.shift();
+                    $("#now").html("剩余电力："+data.balance+"千瓦·时");
+                    $.each(data.data,function(index,value) {
+                        txt2 += "<tr><td>"+data.data[index].date+"</td><td>"+data.data[index].usage+" 千瓦·时</td><tr/>";
                         i++;
-                        if (i == 30) {
+                        if (i == 20) {
                             return false;
                         }
-
                     })
                     $("#tbody").append(txt2);
                 }

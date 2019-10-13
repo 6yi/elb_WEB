@@ -6,15 +6,16 @@ import org.springframework.stereotype.Service;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import reactor.core.scheduler.Scheduler;
+import redis.clients.jedis.Jedis;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -38,7 +39,7 @@ import java.util.List;
 
 @Service
 public class workService {
-
+    private static  Jedis jedis=new Jedis("59.110.173.180",1234);
     //正则
     private static Pattern pattern = Pattern.compile("<pre.+>[\\w\\W]*<.+pre>");
     private static Pattern pattern2 = Pattern.compile("<span class=\"fl\".+>[\\w\\W]*<.+span>");
@@ -67,61 +68,108 @@ public class workService {
         return list;
     }
 
-    //查水电
-    public String query(String loudong,String sushe,String token,String  userid){
+        public String[] get_time(){
+
+            String time= jedis.get("time");
+            String time2=null;
+            if (time==null) {
+                Date date = new Date(); //获取当前的系统时间。
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.DAY_OF_MONTH, -20);
+                time = dateFormat.format(date);
+                time2 = dateFormat.format(calendar.getTime());
+                jedis.set("time", time);
+                jedis.set("time2", time2);
+                jedis.expire("time", 28800);
+                jedis.expire("time2", 28800);
+            }else{
+                time2=jedis.get("time2");
+            }
+        String[] strs={time,time2};
+
+        return  strs;
+    }
+
+    public String query(String areas,String rooms){
         StringBuilder builder=new StringBuilder();
-        String tokenname = "token="+token;
-        String sushename="sushe="+sushe;
-        String loudongname="loudong="+loudong;
-        try {
-            URL url1=new URL("http://121.199.42.16/VAD/GetIp.aspx?act=get&num=1&time=60&plat=0&re=0&type=0&ow=1");
+        try{
+            String []times=get_time();
+            URL url=new URL("https://smart-ccdgut.com/electric"+"/areas/"+areas+"/rooms/"+rooms+"/types/0?from="+times[1]+"&to="+times[0]);
             List<String> list=get_ip();
-//            System.getProperties().setProperty("proxySet", "true");
-//            System.setProperty("http.proxyHost", list.get(0));
-//            System.setProperty("http.proxyPort", list.get(1));
             SocketAddress addr = new InetSocketAddress(list.get(0), Integer.parseInt(list.get(1)));
             Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
-            URL url=new URL("https://smart-ccdgut.com/elecharge/data.php");
             HttpURLConnection con= (HttpURLConnection) url.openConnection(proxy);
-            //System.out.println(getHtml("http://www.ip138.com/ip2city.asp"));
-            con.setRequestMethod("POST");
-            con.setUseCaches(true);
-            //伪造请求头redirect
+            con.setRequestMethod("GET");
             con.setRequestProperty("Host", "smart-ccdgut.com");
             con.setRequestProperty("Connection", "Keep-Alive");
-            con.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
-            con.setRequestProperty("Origin", "https://smart-ccdgut.com");
-            con.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-            con.setRequestProperty("Referer", "https://smart-ccdgut.com/elecharge/index.php?needLogin=1&XPS-UserId="+userid+"&token="+token);
-            con.setRequestProperty("Accept-Encoding","gzip, deflate, br");
-            con.setRequestProperty("Accept-Language","zh-CN,zh;q=0.9");
-            //请求参数
-            System.out.println("准备尝试！");
-            con.setDoOutput(true);
-            con.setDoInput(true);
             con.connect();
-            DataOutputStream out = new DataOutputStream(con
-                    .getOutputStream());
-            out.writeBytes(sushename+"&"+loudongname+"&"+tokenname+"&isBind=0");
-            //流用完记得关
-            out.flush();
-            out.close();
-            //获取响应
-            InputStream stream = new GZIPInputStream(con.getInputStream());
+            InputStream stream = con.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"utf-8"));
-            System.out.println("获取到了！");
             String line;
             while ((line = reader.readLine()) != null){
                 builder.append(line);
             }
             con.disconnect();
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
-            return builder.toString();
+        return builder.toString();
     }
+
+
+
+    //查水电
+//    public String query(String loudong,String sushe,String token,String  userid){
+//        StringBuilder builder=new StringBuilder();
+//        String tokenname = "token="+token;
+//        String sushename="sushe="+sushe;
+//        String loudongname="loudong="+loudong;
+//        try {
+//            URL url1=new URL("http://121.199.42.16/VAD/GetIp.aspx?act=get&num=1&time=60&plat=0&re=0&type=0&ow=1");
+//            List<String> list=get_ip();
+//            SocketAddress addr = new InetSocketAddress(list.get(0), Integer.parseInt(list.get(1)));
+//            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+//            URL url=new URL("https://smart-ccdgut.com/elecharge/data.php");
+//            HttpURLConnection con= (HttpURLConnection) url.openConnection(proxy);
+//            //System.out.println(getHtml("http://www.ip138.com/ip2city.asp"));
+//            con.setRequestMethod("POST");
+//            con.setUseCaches(true);
+//            //伪造请求头redirect
+//            con.setRequestProperty("Host", "smart-ccdgut.com");
+//            con.setRequestProperty("Connection", "Keep-Alive");
+//            con.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+//            con.setRequestProperty("Origin", "https://smart-ccdgut.com");
+//            con.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+//            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
+//            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+//            con.setRequestProperty("Referer", "https://smart-ccdgut.com/elecharge/index.php?needLogin=1&XPS-UserId="+userid+"&token="+token);
+//            con.setRequestProperty("Accept-Encoding","gzip, deflate, br");
+//            con.setRequestProperty("Accept-Language","zh-CN,zh;q=0.9");
+//            con.setDoOutput(true);
+//            con.setDoInput(true);
+//            con.connect();
+//            DataOutputStream out = new DataOutputStream(con
+//                    .getOutputStream());
+//            out.writeBytes(sushename+"&"+loudongname+"&"+tokenname+"&isBind=0");
+//            //流用完记得关
+//            out.flush();
+//            out.close();
+//            //获取响应
+//            InputStream stream = new GZIPInputStream(con.getInputStream());
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"utf-8"));
+//            System.out.println("获取到了！");
+//            String line;
+//            while ((line = reader.readLine()) != null){
+//                builder.append(line);
+//            }
+//            con.disconnect();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//            return builder.toString();
+//    }
 
     //查课表
     public List<String[]> queryClass(String token,String userid) {
