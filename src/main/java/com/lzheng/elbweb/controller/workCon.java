@@ -36,15 +36,15 @@ public class workCon {
     @GetMapping("/work/query")
     public void cx(@RequestParam("loudong")String loudong,@RequestParam("sushe")String sushe ,HttpServletRequest request,HttpServletResponse response) throws IOException {
         System.out.println("ajax有反应了！！"+loudong+"xx"+sushe);
-        String tokne=(String)request.getSession().getAttribute("token");
+        String token=(String)request.getSession().getAttribute("token");
         String userid=(String)request.getSession().getAttribute("userid");
         List<String> list=new ArrayList<>();
-        if (tokne==null){
+        if (token==null){
              list=uservice.query("lzheng","13650010553");
-            tokne=list.get(0);
+            token=list.get(0);
             userid=list.get(1);
         }
-        String bulid=service.query(loudong,sushe);
+        String bulid=service.query(loudong,sushe,token);
         request.getSession().setAttribute("msg",bulid);
         PrintWriter out = response.getWriter();
         out.print(bulid);

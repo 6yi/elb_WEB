@@ -33,7 +33,7 @@ public class ElbWebApplicationTests {
         calendar.add(Calendar.DAY_OF_MONTH, -20);
         String time=dateFormat.format(date);
         String time2=dateFormat.format(calendar.getTime());
-        Jedis jedis=new Jedis("59.110.173.180",1234);
+        Jedis jedis=new Jedis("59.110.173.180",9054);
 
         //jedis.set("test", "1");
         String number=jedis.get("test");

@@ -39,7 +39,7 @@ import java.util.List;
 
 @Service
 public class workService {
-    private static  Jedis jedis=new Jedis("59.110.173.180",1234);
+    private static  Jedis jedis=new Jedis("59.110.173.180",9054);
     //正则
     private static Pattern pattern = Pattern.compile("<pre.+>[\\w\\W]*<.+pre>");
     private static Pattern pattern2 = Pattern.compile("<span class=\"fl\".+>[\\w\\W]*<.+span>");
@@ -92,18 +92,21 @@ public class workService {
         return  strs;
     }
 
-    public String query(String areas,String rooms){
+    public String query(String areas,String rooms,String token){
         StringBuilder builder=new StringBuilder();
         try{
+
             String []times=get_time();
             URL url=new URL("https://smart-ccdgut.com/electric"+"/areas/"+areas+"/rooms/"+rooms+"/types/0?from="+times[1]+"&to="+times[0]);
             List<String> list=get_ip();
             SocketAddress addr = new InetSocketAddress(list.get(0), Integer.parseInt(list.get(1)));
             Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+            String xsrf="XSRF-TOKEN=eyJpdiI6Im11RXpVUTl0eUNpaVh2V05PN3Jud1E9PSIsInZhbHVlIjoiR2k4MGtkTXh0OURrSkRwWmR4M1d6dldUVWZOXC9hRG5vUWhJR0pmZVBVVmh0Y3VVWkxIT21tNnQrM1VIWk4ycmoiLCJtYWMiOiJjMWQzN2U0ZTQzMGE2ZjYzYjgzOTBlMjY5YzFkZGRlZmQwODFkYjc2ZDAzM2Q4NDNmY2YxZThkOGQ2MWZiZDlmIn0%3D; smartccdgutservice_session=eyJpdiI6Ino5bVwvR3JOV0dHa3ltdlV4UjhGR2JnPT0iLCJ2YWx1ZSI6IjBHKzRnNXhsMksrbGdaMG01QkJSMVYwMGxsQlhadkxsTXpra3lDQ0c3V2ZzYkpydlduQXdMOWNJZThMdHhZdVUiLCJtYWMiOiI3NDA4MGEyYWE3YTMyZmNjMTM1ZGNmNDA5Nzg0MjU0NmZjNGJlZDJiMTBmNDNmNGQ2NDQyMWRjZTA1N2RkNWYxIn0%3D";
             HttpURLConnection con= (HttpURLConnection) url.openConnection(proxy);
             con.setRequestMethod("GET");
             con.setRequestProperty("Host", "smart-ccdgut.com");
             con.setRequestProperty("Connection", "Keep-Alive");
+            con.setRequestProperty("Cookie", xsrf);
             con.connect();
             InputStream stream = con.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream,"utf-8"));
@@ -118,6 +121,20 @@ public class workService {
         return builder.toString();
     }
 
+    private String get_xsrf(String token,Proxy proxy) {
+        try {
+            URL url=new URL("https://smart-ccdgut.com/elecharge/index.php?needLogin=1&XPS-UserId=78283&token="+token+"&");
+            HttpURLConnection con= (HttpURLConnection) url.openConnection(proxy);
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Host", "smart-ccdgut.com");
+            con.setRequestProperty("Connection", "Keep-Alive");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 
     //查水电
